@@ -7,7 +7,15 @@ Console.WriteLine("Enter directory to process:");
 var directory = Console.ReadLine();
 
 var factory = new WordsCounterServiceTextFactory();
-var counterService = factory.GetWordsCounterServiceInstance();
+try
+{
+    var counterService = factory.GetWordsCounterServiceInstance();
+}
+catch(Exception ex)
+{
+    Console.WriteLine("Error during file processing. Error message:");
+    Console.WriteLine(ex.ToString());
+}
 
 var output = await counterService.CountWordsInDirectory(directory);
 Console.WriteLine("Words counter resault:");

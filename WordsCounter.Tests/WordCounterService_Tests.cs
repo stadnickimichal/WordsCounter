@@ -13,7 +13,7 @@ namespace WordsCounter.Tests
             factory.SetFileContent(mockedFiles);
             factory.SetDirectoryContent(directoryContent);
             var wordsCounter = factory.GetWordsCounterServiceInstance();
-            var responce = await wordsCounter.CountWordsInDirectory("");
+            var responce = await wordsCounter.CountWordsInDirectory("testDirectory");
 
             CompareWordsCounterResponce(responce, expectedResponce);
         }
@@ -33,7 +33,7 @@ namespace WordsCounter.Tests
                 });
             factory.SetFilingFile("testFile1");
             var wordsCounter = factory.GetWordsCounterServiceInstance();
-            var responce = await wordsCounter.CountWordsInDirectory("");
+            var responce = await wordsCounter.CountWordsInDirectory("testDirectory");
 
             Assert.True(responce.Success == false);
             Assert.True(responce.FileProcessed == 2);
@@ -41,6 +41,36 @@ namespace WordsCounter.Tests
             Assert.True(responce.UnreadFiles[0].Message == "testFile1 exception!");
             Assert.True(responce.UnreadFiles[0].FileName == "testFile1");
             Assert.True(responce.UnreadFiles[0].Exception != null);
+        }
+
+        [Fact]
+        public async void ProcessFiles_TextFile_NoFiles_Fails()
+        {
+            var factory = new WordsCounterServiceTextMockFactory();
+            var wordsCounter = factory.GetWordsCounterServiceInstance();
+            var responce = await wordsCounter.CountWordsInDirectory("testDirectory");
+            Assert.True(responce.Success == false);
+            Assert.True(responce.ErrorMessage == "There are no files to read in directory: testDirectory");
+        }
+
+        [Fact]
+        public async void ProcessFiles_TextFile_NullDirectory_Fails()
+        {
+            var factory = new WordsCounterServiceTextMockFactory();
+            var wordsCounter = factory.GetWordsCounterServiceInstance();
+            var responce = await wordsCounter.CountWordsInDirectory(null);
+            Assert.True(responce.Success == false);
+            Assert.True(responce.ErrorMessage == "Directory cant't be null");
+        }
+
+        [Fact]
+        public async void ProcessFiles_TextFile_DirectoryNotFound_Fails()
+        {
+            var factory = new WordsCounterServiceTextMockFactory();
+            var wordsCounter = factory.GetWordsCounterServiceInstance();
+            var responce = await wordsCounter.CountWordsInDirectory("badDirtectory");
+            Assert.True(responce.Success == false);
+            Assert.True(responce.ErrorMessage == "badDirtectory is not a directory");
         }
 
         private void CompareWordsCounterResponce(WordsCounterResponce responce1,  WordsCounterResponce responce2) 
