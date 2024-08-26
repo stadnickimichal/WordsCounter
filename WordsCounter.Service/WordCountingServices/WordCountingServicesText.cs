@@ -59,6 +59,11 @@ namespace WordsCounter.Service.WordCountingServices
                 {
                     var kay = word.Trim().ToLower();
 
+                    if (string.IsNullOrWhiteSpace(kay))
+                    {
+                        continue;
+                    }
+
                     if (wordCounts.ContainsKey(kay))
                     {
                         wordCounts[kay]++;
