@@ -10,16 +10,16 @@ var factory = new WordsCounterServiceTextFactory();
 try
 {
     var counterService = factory.GetWordsCounterServiceInstance();
+
+    var output = await counterService.CountWordsInDirectory(directory);
+    Console.WriteLine("Words counter resault:");
+    foreach (var word in output.WordCounts.OrderBy(x => x.Key))
+    {
+        Console.WriteLine($"{word.Key}: {word.Value}");
+    }
 }
 catch(Exception ex)
 {
     Console.WriteLine("Error during file processing. Error message:");
     Console.WriteLine(ex.ToString());
-}
-
-var output = await counterService.CountWordsInDirectory(directory);
-Console.WriteLine("Words counter resault:");
-foreach (var word in output.WordCounts.OrderBy(x => x.Key))
-{
-    Console.WriteLine($"{word.Key}: {word.Value}");
 }
