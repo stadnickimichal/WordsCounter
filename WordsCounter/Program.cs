@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using WordsCounter.Service;
-using WordsCounter.Service.FactoryMethods;
+﻿using WordsCounter.Service.FactoryMethods;
 
 Console.WriteLine("Welcome to words counter, using this tool you can count occurance of words in all text file in provided directory");
 Console.WriteLine("Enter directory to process:");
